@@ -3,24 +3,10 @@
     <title>Player Score Counter</title>
   </head>
   <body>
-    Player 1:
-    <div>
-      Cash: <label id="player1cash">$0</label><br/>
-      Infamy: <label id="player1infamy">0</label><br/>
-      Amount: <input id="player1change" type="text" name="player1"><br>
-      <button onclick="cashPlayer(0)">Change Cash</button>
-      <button onclick="infamyPlayer(0)">Change Infamy</button>
-    </div>
-    Player 2:
-    <div>
-      Cash: <label id="player2cash">$0</label><br/>
-      Infamy: <label id="player2infamy">0</label><br/>
-      Amount: <input id="player2change" type="text" name="player2"><br>
-      <button onclick="cashPlayer(1)">Change Cash</button>
-      <button onclick="infamyPlayer(1)">Change Infamy</button>
-    </div>
+    <div id="players"></div>
   </body>
   <footer>
+      <script src="dom.js"></script>
       <script src="main.js"></script>
   </footer>
 </html>

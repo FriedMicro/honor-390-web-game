@@ -1,51 +1,75 @@
-playerCash = [2000, 2000];
-playerInfamy = [0, 0];
+playerCash = [];
+playerInfamy = [];
+playerCount = 0;
+
 var cashPlayer = function(index){
-  var change = 0;
   var infamy = playerInfamy[index];
-  if(index == 0){
-    change = document.getElementById("player1change").value;
-  } else {
-    change = document.getElementById("player2change").value;
-  }
+  var id = getId(index, "change");
+  var change = getValueById(id);
   if(change > 0){
     change = change - change * infamy/10;
   } else {
     change = change - Math.abs(change * infamy/10);
   }
   playerCash[index] = playerCash[index] + change;
-  if(index == 0){
-    document.getElementById("player1cash").innerHTML = playerCash[index];
-  } else {
-    document.getElementById("player2cash").innerHTML = playerCash[index];
-  }
+  var id = getId(index, "cash");
+  setValueById(id, playerCash[index]);
 }
 
 var infamyPlayer = function(index){
-  var change = 0;
   var infamy = playerInfamy[index];
-  if(index == 0){
-    change = document.getElementById("player1change").value;
-  } else {
-    change = document.getElementById("player2change").value;
-  }
-  if(change > 0){
-    change = change - change * infamy/10;
-  } else {
-    change = change - Math.abs(change * infamy/10);
-  }
+  var id = getId(index, "change");
+  var change = getValueById(id);
   playerInfamy[index] = playerInfamy[index] + change;
-  if(index == 0){
-    document.getElementById("player1infamy").innerHTML = playerInfamy[index];
-  } else {
-    document.getElementById("player2infamy").innerHTML = playerInfamy[index];
+  id = getId(index, "infamy");
+  setValueById(id, playerInfamy[index]);
+}
+
+var getId = function(index, suffix){
+  var id = "player" + String(index + 1) + suffix;
+  return id;
+}
+
+var init = function(){
+  playerCount = prompt("How many players?");
+  setBaseDom();
+  setBaseValues();
+  setBaseDomValues();
+}
+
+var setBaseDom = function(){
+  for(var i = 0; i < playerCount; i++){
+    var dom = formatPlayerDom(i);
+    appendToId("players", dom);
   }
 }
-var init = function(){
-  document.getElementById("player1cash").innerHTML = playerCash[0];
-  document.getElementById("player2cash").innerHTML = playerCash[1];
-  document.getElementById("player1infamy").innerHTML = playerInfamy[0];
-  document.getElementById("player2infamy").innerHTML = playerInfamy[1];
+
+var formatPlayerDom = function(index){
+  var dom = 'Player ' + String(index+1) + ':' +
+      '<div>' +
+      'Cash: <label id="' + getId(index, "cash") + '">$0</label><br/>' +
+      'Infamy: <label id="' + getId(index, "infamy") + '">0</label><br/>' +
+      'Amount: <input id="' + getId(index, "change") + '" type="text"><br>' +
+      '<button onclick="cashPlayer(' + index + ')">Change Cash</button>' +
+      '<button onclick="infamyPlayer(' + index + ')">Change Infamy</button>' +
+      '</div>';
+    return dom;
+}
+
+var setBaseValues = function(){
+  for(var i = 0; i < playerCount; i++){
+    playerCash.push(2000);
+    playerInfamy.push(0);
+  }
+}
+
+var setBaseDomValues = function(){
+  for(var i = 0; i < playerCount; i++){
+    var id = getId(i, "cash");
+    setValueById(id, playerCash[i]);
+    var id = getId(i, "infamy");
+    setValueById(id, playerInfamy[i]);
+  }
 }
 
 var checkLossInfamy = function(){
