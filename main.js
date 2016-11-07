@@ -3,17 +3,30 @@ playerInfamy = [];
 playerCount = 0;
 
 var cashPlayer = function(index){
-  var infamy = playerInfamy[index];
+  change = calculateCashChange(index);
+  playerCash[index] = playerCash[index] + change;
+  var id = getId(index, "cash");
+  setValueById(id, playerCash[index]);
+  checkLossCash(index);
+}
+
+var checkLossCash = function(index){
+  if(playerCash[index] <= 0){
+    var message = "Player " + String(index + 1) + ": has been removed from the game."
+    alert(message);
+  }
+}
+
+var calculateCashChange = function(index){
   var id = getId(index, "change");
+  var infamy = playerInfamy[index];
   var change = getValueById(id);
   if(change > 0){
     change = change - change * infamy/10;
   } else {
     change = change - Math.abs(change * infamy/10);
   }
-  playerCash[index] = playerCash[index] + change;
-  var id = getId(index, "cash");
-  setValueById(id, playerCash[index]);
+  return preciseRound(change);
 }
 
 var infamyPlayer = function(index){
@@ -70,14 +83,6 @@ var setBaseDomValues = function(){
     var id = getId(i, "infamy");
     setValueById(id, playerInfamy[i]);
   }
-}
-
-var checkLossInfamy = function(){
-
-}
-
-var checkLossCash = function(){
-
 }
 
 init();
