@@ -62,7 +62,7 @@ var formatPlayerDom = function(index){
       '<div>' +
       'Cash: <label id="' + getId(index, "cash") + '">$0</label><br/>' +
       'Infamy: <label id="' + getId(index, "infamy") + '">0</label><br/>' +
-      'Amount: <input id="' + getId(index, "change") + '" type="text"><br>' +
+      'Amount: <input id="' + getId(index, "change") + '" type="number"><br>' +
       '<button onclick="cashPlayer(' + index + ')">Change Cash</button>' +
       '<button onclick="infamyPlayer(' + index + ')">Change Infamy</button>' +
       '</div>';

@@ -1,0 +1,26 @@
+body {
+  text-align: center;
+  background-color: black;
+}
+
+div {
+    color: lightblue;
+}
+
+button {
+    background-color: darkorchid;
+    color: white;
+    padding: 3px;
+    border-radius: 22px;
+}
+
+input {
+  width: 50px;
+  background-color: transparent;
+  color: whitesmoke;
+  border-color: darkorchid;
+}
+
+* {
+  font-family: 'Calligraffitti', cursive;
+}
