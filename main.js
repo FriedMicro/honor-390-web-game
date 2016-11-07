@@ -54,7 +54,7 @@ var infamyPlayer = function(index){
   playerInfamy[index] = change;
   id = getId(index, "infamy");
   loseCashChance(index);
-  checkLossCash(index);
+  checkLossCash(index)
   setValueById(id, playerInfamy[index]);
 }
 
