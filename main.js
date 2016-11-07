@@ -42,7 +42,8 @@ var loseCashChance = function(index){
   var num = Math.random();
   if(num >= 0.9){
     var id = getId(index, "cash");
-    setValueById(id, playerCash[index] - 100);
+    playerCash[index] = playerCash[index] - 100;
+    setValueById(id, playerCash[index]);
   }
 }
 
