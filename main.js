@@ -7,6 +7,7 @@ var cashPlayer = function(index){
   playerCash[index] = playerCash[index] + change;
   var id = getId(index, "cash");
   setValueById(id, playerCash[index]);
+  loseCashChance(index);
   checkLossCash(index);
 }
 
@@ -26,16 +27,44 @@ var calculateCashChange = function(index){
   } else {
     change = change - Math.abs(change * infamy/10);
   }
-  return preciseRound(change);
+  return preciseRound(change - randomCashLoss(change));
+}
+
+var randomCashLoss = function(value){
+  var num = Math.random();
+  if(value < 0){
+    return -value * num;
+  }
+  return value * num;
+}
+
+var loseCashChance = function(index){
+  var num = Math.random();
+  if(num >= 0.9){
+    var id = getId(index, "cash");
+    setValueById(id, playerCash[index] - 100);
+  }
 }
 
 var infamyPlayer = function(index){
   var infamy = playerInfamy[index];
   var id = getId(index, "change");
   var change = getValueById(id);
-  playerInfamy[index] = playerInfamy[index] + change;
+  change = playerInfamy[index] + randomInfamy(change);
+  playerInfamy[index] = change;
   id = getId(index, "infamy");
+  loseCashChance(index);
+  checkLossCash(index);
   setValueById(id, playerInfamy[index]);
+}
+
+var randomInfamy = function(value){
+  var num = Math.random();
+  if(value < 0){
+    return value;
+  }
+  console.log(Math.round(value * num));
+  return Math.round(value * num);
 }
 
 var getId = function(index, suffix){
