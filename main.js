@@ -1,13 +1,13 @@
 playerCash = [];
 playerInfamy = [];
 playerCount = 0;
+password = "";
 
 var cashPlayer = function(index){
   change = calculateCashChange(index);
   playerCash[index] = playerCash[index] + change;
   var id = getId(index, "cash");
   setValueById(id, playerCash[index]);
-  loseCashChance(index);
   checkLossCash(index);
 }
 
@@ -27,24 +27,7 @@ var calculateCashChange = function(index){
   } else {
     change = change - Math.abs(change * infamy/10);
   }
-  return preciseRound(change - randomCashLoss(change));
-}
-
-var randomCashLoss = function(value){
-  var num = Math.random();
-  if(value < 0){
-    return -value * num;
-  }
-  return value * num;
-}
-
-var loseCashChance = function(index){
-  var num = Math.random();
-  if(num >= 0.9){
-    var id = getId(index, "cash");
-    playerCash[index] = playerCash[index] - 100;
-    setValueById(id, playerCash[index]);
-  }
+  return preciseRound(change);
 }
 
 var infamyPlayer = function(index){
@@ -54,7 +37,6 @@ var infamyPlayer = function(index){
   change = playerInfamy[index] + randomInfamy(change);
   playerInfamy[index] = change;
   id = getId(index, "infamy");
-  loseCashChance(index);
   checkLossCash(index)
   setValueById(id, playerInfamy[index]);
 }
@@ -64,8 +46,9 @@ var randomInfamy = function(value){
   if(value < 0){
     return value;
   }
-  console.log(Math.round(value * num));
-  return Math.round(value * num);
+  var change = Math.round(value * num);
+  alert("Infamy added: " + change);
+  return change;
 }
 
 var getId = function(index, suffix){
@@ -75,9 +58,11 @@ var getId = function(index, suffix){
 
 var init = function(){
   playerCount = prompt("How many players?");
+  password = prompt("What GM password would you like?");
   setBaseDom();
   setBaseValues();
   setBaseDomValues();
+  setActivePlayer();
 }
 
 var setBaseDom = function(){
@@ -87,14 +72,20 @@ var setBaseDom = function(){
   }
 }
 
+var setActivePlayer = function(){
+  setStylingById("player1", "display:block");
+}
+
 var formatPlayerDom = function(index){
-  var dom = 'Player ' + String(index+1) + ':' +
+  var dom = '<div id="player' + String(index+1) + '" style="display:none">Player ' + String(index+1) + ':' +
       '<div>' +
       'Cash: <label id="' + getId(index, "cash") + '">$0</label><br/>' +
       'Infamy: <label id="' + getId(index, "infamy") + '">0</label><br/>' +
       'Amount: <input id="' + getId(index, "change") + '" type="number"><br>' +
       '<button onclick="cashPlayer(' + index + ')">Change Cash</button>' +
       '<button onclick="infamyPlayer(' + index + ')">Change Infamy</button>' +
+      '</div>' +
+      '<button onclick="goToNextPlayer(' + index + ')">Go to Next Player' +
       '</div>';
     return dom;
 }
@@ -114,5 +105,38 @@ var setBaseDomValues = function(){
     setValueById(id, playerInfamy[i]);
   }
 }
+
+var goToNextPlayer = function(index){
+  playerCash[index] = playerCash[index] - 400;
+  setStylingById("player"+ String(index+1), "display:none");
+  index++;
+  if(index + 1 > playerCount){
+    index = 0;
+  }
+  setStylingById("player"+ String(index+1), "display:block");
+}
+
+var changeAnotherPlayer = function(){
+  if(prompt("Enter GM password") != password){
+    alert("Invalid password");
+    return;
+  }
+  var playerNumber = Number(prompt("Which player will this affect?"));
+  var type = Number(prompt("1: fame or 2: money change?"));
+  var amount = Number(prompt("Quanity"));
+  if(type == 1){
+    playerInfamy[playerNumber-1] += amount;
+    var id = getId(playerNumber - 1, "infamy");
+    setValueById(id, playerInfamy[playerNumber - 1]);
+  } else if(type == 2){
+    playerCash[playerNumber-1] += amount;
+    checkLossCash(playerNumber - 1);
+    var id = getId(playerNumber - 1, "cash");
+    setValueById(id, playerCash[playerNumber - 1]);
+  } else {
+    alert("invalid choice");
+  }
+}
+
 
 init();

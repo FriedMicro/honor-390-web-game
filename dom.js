@@ -19,3 +19,7 @@ var setValueById = function(id, string){
 var appendToId = function(id, dom){
   document.getElementById(id).innerHTML += dom;
 }
+
+var setStylingById = function(id, value){
+  document.getElementById(id).style = value;
+}
